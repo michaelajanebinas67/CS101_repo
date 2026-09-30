@@ -1,0 +1,131 @@
+---
+title: "RExercise#2_binas.Rmd"
+author: "Michaela Jane Binas"
+date: "2026-09-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Part A - Arithmetic Operations
+
+```{r}
+a <- 17
+b <- 5
+a + b
+a - b
+a * b
+a / b
+
+```
+
+#Part 2
+```{r}
+
+a %% b
+a %/% b
+```
+
+#Part 3
+```{r}
+
+2^10
+```
+#Part 4 
+
+#Question 1
+
+#The division gives you the exact result, while the other two operators break down into the remainders.
+
+```{r}
+17 / 5
+17 %% 5
+17 %/% 5
+```
+
+#Part 5
+
+#I thought that they both would have the outcome of 3 but it seems that I misunderstood it.
+```{r}
+10 %% 3
+10 %/% 3
+```
+
+
+## Part Basic Data Types: typeof(), class(), and mode()
+
+#Part 2
+```{r}
+x <- 42
+typeof(x)
+y <- 42L
+typeof(y)
+z <- "42"
+typeof(z)
+w <- TRUE
+typeof(w)
+v <- 3 + 2i 
+typeof(v)
+```
+
+#Part 3
+```{r}
+x <- 42
+class(x)
+y <- 42L
+class(y)
+z <- "42"
+class(z)
+w <- TRUE
+class(w)
+v <- 3 + 2i 
+class(v)
+```
+
+#Part 4
+```{r}
+x <- 42
+mode(x)
+y <- 42L
+mode(y)
+z <- "42"
+mode(z)
+w <- TRUE
+mode(w)
+v <- 3 + 2i 
+mode(v)
+```
+
+#Part 5
+
+#Question 3: x is stored as a decimal number by default, while y uses the L suffix to force R to store it strictly as a whole number.
+
+#Question 4:Yes, they differ for x because typeof(x) describes its precise format, whereas class(x) and mode(x) describe its mathematical term ("numeric").
+
+
+## Part C — Type Conversion (20 min)
+
+```{r}
+num_string <- "123"
+num_value <- as.numeric(num_string)
+typeof(num_value)
+class(num_value)
+mode(num_value)
+```
+
+#Part 2
+```{r}
+logical_zero <- as.logical(0)
+logical_one  <- as.logical(1)
+logical_zero
+logical_one
+```
+
+#Part 3
+```{r}
+bad_string <- "hello123"
+result <- as.numeric(bad_string)
+```
+
