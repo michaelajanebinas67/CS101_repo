@@ -129,3 +129,88 @@ bad_string <- "hello123"
 result <- as.numeric(bad_string)
 ```
 
+#Q5.1 - R produces a warning when it cannot convert a character string into a valid number. Instead of immediately stopping the program, it returns NA to indicate that the conversion produced a missing value. This helps identify data that cannot be converted successfully.
+
+#Q5.2 - Ignoring these warnings can cause problems because the resulting NA values may affect later calculations. For example, mathematical operations involving missing values may also return NA, making the results incomplete or incorrect.
+
+#Q6
+```{r}
+logi_1 <- as.logical(2)
+logi_1
+
+logi_2 <- as.logical(-1)
+logi_2
+```
+
+#Q6 - After running the code, both `as.logical(2)` and `as.logical(-1)` return TRUE. R treats any nonzero numeric value as TRUE, regardless of whether it is positive or negative. Only 0 converts to FALSE.
+
+## Part D - Strings, paste(), and paste0()
+
+#1
+```{r}
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+
+cat(first_name)
+cat(last_name)
+```
+
+#2
+```{r}
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+
+paste(first_name, last_name)
+paste0(first_name, last_name)
+```
+
+#Q2 - The `paste()` function joins the first and last names with a space by default. In contrast, `paste0()` combines them directly without adding a separator.
+
+#3
+```{r}
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+
+cat(first_name)
+cat(last_name)
+
+paste(first_name, last_name, sep = "-")
+```
+
+#4
+```{r}
+age <- 21
+first_name <- "Juan"
+last_name <- "Dela Cruz"
+
+full_name <- paste(first_name, last_name)
+paste0(full_name, " is ", age, " years old.")
+```
+
+#Q7 - The main difference between `paste()` and `paste0()` is their default separator. The `paste()` function uses a space between values, while `paste0()` does not insert anything between them. For example, `paste(first_name, last_name)` returns "Juan Dela Cruz", whereas `paste0(first_name, last_name)` returns "JuanDela Cruz".
+
+#Q8 - No error occurred because `paste0()` can combine different data types into a character string. In this example, the numeric value 21 is included in the resulting text without requiring a separate conversion.
+
+## Part E - Critical Thinking Challenge
+
+#1
+```{r}
+# "5" + 5
+```
+
+#1 - When tested, the expression produces an error because "5" is a character string, not a numeric value. R cannot directly perform arithmetic between these two types.
+
+#2
+```{r}
+as.numeric("5") + 5
+```
+
+#Q9 - Based on my observations, R requires the correct data types for different operations. It does not always automatically convert values into the type needed for a calculation. Because of this, I learned that I should be careful when assigning values and use conversion functions when necessary to prevent errors.
+
+#Q10 - My classmate may have accidentally stored the values in the "numbers" column as characters by enclosing them in quotation marks. Since `sum()` is intended for numeric values, this can cause an error when the column contains character data.
+
+## Conclusion
+
+# After practicing with R, I learned that numbers, character strings, logical values, and complex numbers have different data types. Functions such as `typeof()`, `class()`, and `mode()` help me identify the type of data I am working with and determine which operations are appropriate.
+
+# I also learned that conversion functions such as `as.numeric()` can help correct data type issues without having to rewrite every line of code. However, I must still check for warnings and missing values to ensure that the results are reliable. Overall, these exercises helped me understand why proper data types and careful handling of values are important when writing R programs.
