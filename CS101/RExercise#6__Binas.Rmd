@@ -1,0 +1,248 @@
+---
+title: "RExercise#6_Binas"
+author: "Michaela Jane Binas"
+date: "2026-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# EXERCISE 6 — DATA FRAMES
+
+## Part A — Creating Data Frames
+
+### A.
+```{r}
+name <- c("Ana", "Ben", "Cid", "Dex", "Eli")
+
+age <- c(20, 21, 19, 22, 20)
+
+passed <- c(TRUE, TRUE, FALSE, TRUE, FALSE)
+```
+
+### B.
+```{r}
+students <- data.frame(name = name, age = age, passed = passed)
+
+students
+```
+
+### C.
+```{r}
+typeof(students$name)
+
+class(students$name)
+```
+
+### D.
+```{r}
+courses <- data.frame(
+  course_code = c("IS101", "IS102", "IS103"),
+  units = c(3, 3, 2),
+  instructor = c("Dr. P. Reyes", "Dr. R. Santos", "Dr. S. Cruz")
+)
+
+courses
+```
+
+## Question #1
+
+```{r}
+# The data.frame() function requires every column to have the same length because each row must represent one complete observation. If the columns have different lengths, R produces an error because the values cannot be arranged into matching rows.
+```
+
+## Question #2
+
+```{r}
+# A data frame is described as a list of vectors of equal length because each column is a separate vector. Unlike a regular vector, each column can have a different data type, such as character, numeric, or logical. However, all values within one column must have the same data type. This allows a data frame to organize different kinds of information in one table.
+```
+
+---
+
+## Part B — Subsetting Data Frames
+
+### A.
+```{r}
+students$age
+
+students[["age"]]
+
+students["age"]
+```
+
+### B.
+```{r}
+students[2, ]
+```
+
+### C.
+```{r}
+students[3, "name"]
+```
+
+### D.
+```{r}
+students[students$passed == TRUE, ]
+```
+
+### E.
+```{r}
+students[students$passed == TRUE & students$age > 19, ]
+```
+
+## Question #3
+
+```{r}
+class(students["age"])
+
+class(students$age)
+
+# students["age"] returns a data frame because single brackets select the column while keeping its original structure. On the other hand, students$age directly extracts the age vector, which has the class numeric. This is similar to lists, where single brackets return a list and double brackets extract the actual element.
+```
+
+## Question #4
+
+```{r}
+students$passed == TRUE
+
+students$age > 19
+
+students$passed == TRUE & students$age > 19
+
+# The & operator combines the two logical conditions and checks them for every student. The first condition checks if the student passed, while the second checks if the student's age is greater than 19. Both conditions must be TRUE for the row to be included. If I used | instead, only one of the conditions would need to be TRUE for the student to appear in the result.
+```
+
+---
+
+## Part C — Data Frame Properties
+
+### A.
+```{r}
+str(students)
+```
+
+### B.
+```{r}
+dim(students)
+
+nrow(students)
+
+ncol(students)
+```
+
+### C.
+```{r}
+names(students)
+
+colnames(students)
+```
+
+### D.
+```{r}
+summary(students)
+```
+
+## Question #5
+
+```{r}
+summary(students)
+
+# The numeric age column displays values such as the minimum, maximum, mean, median, and quartiles. The logical passed column shows the number of TRUE and FALSE values. The character name column displays its length, class, and mode. A mean would not make sense for the name column because names are text values and cannot be used for numerical calculations.
+```
+
+## Question #6
+
+```{r}
+str(students)
+
+summary(students)
+
+# The str() function is more useful when I want to check the structure of a data frame and identify the data type of each column. On the other hand, summary() is more useful when I want to see statistical information and get an overview of the values in the dataset.
+```
+
+---
+
+## Part D — Data Frame Operations
+
+### A.
+```{r}
+students$year_level <- c(2, 3, 1, 4, 2)
+
+students
+```
+
+### B.
+```{r}
+students$passed <- NULL
+
+students
+```
+
+### C.
+```{r}
+students[order(students$age), ]
+```
+
+### D.
+```{r}
+students[order(students$age, decreasing = TRUE), ]
+```
+
+## Question #7
+
+```{r}
+# No, I can no longer properly use the passed column to filter the students because it was already removed from the data frame. Accessing students$passed will return NULL, so the previous filtering condition will no longer work as intended. This shows why it is important to keep track of the current columns and structure of a data frame when performing multiple operations.
+```
+
+## Question #8
+
+```{r}
+order(students$age)
+
+students[order(students$age), ]
+
+# First, order(students$age) returns the original row positions arranged according to age. Next, these positions are used inside the row indexing of the data frame. Since the entire rows are selected, all columns are rearranged together instead of sorting only the age column. This keeps the information of each student correctly connected.
+```
+
+---
+
+## Part E — Critical Thinking Challenge
+
+### A.
+```{r}
+grades <- data.frame(
+  name = c("Ana", "Ben", "Cid", "Dex", "Eli"),
+  midterm = c(85, 78, 92, 88, 70),
+  final = c(90, 82, 95, 84, 75)
+)
+
+grades$average <- (grades$midterm + grades$final) / 2
+
+grades
+```
+
+### B.
+```{r}
+# The exercise does not specify a passing mark or provide a remarks column.
+# The following uses 75 as an assumed passing mark.
+
+grades$remarks <- ifelse(grades$average >= 75, "Passed", "Failed")
+
+grades[grades$remarks == "Failed", c("name", "average")]
+```
+
+## Question #9
+
+```{r}
+# I would first add a new column that calculates the difference between the midterm and final scores. This would help me identify students whose final scores dropped compared to their midterm scores. Next, I would sort the results to identify the students with the biggest drops. I would also compare their midterm scores and averages to check whether they already had low scores before the final examination. By comparing these results with their remarks, I could get a better idea of which factor seems more responsible for their final performance.
+```
+
+---
+
+## Conclusion
+
+```{r}
+# A data frame is a two-dimensional data structure that organizes information into rows and columns. It is related to vectors because each column is a vector, and it is similar to a list because it can contain different data types in separate columns. Unlike a regular vector, a data frame can organize different types of information in one table while keeping each column consistent. It is useful for real-world datasets because it makes storing, accessing, filtering, and analyzing information easier.
+```
