@@ -1,0 +1,268 @@
+---
+title: "RExercise#5_Binas"
+author: "Michaela Jane Binas"
+date: "2026-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# EXERCISE 5 — MATRICES AND ARRAYS
+
+## Part A — Creating Matrices
+
+### A.
+```{r}
+m1 <- matrix(1:9, nrow = 3, ncol = 3)
+
+m1
+```
+
+### B.
+```{r}
+m2 <- matrix(1:9, nrow = 3, ncol = 3, byrow = TRUE)
+
+m2
+```
+
+### C.
+```{r}
+scores <- matrix(c(88, 92, 79, 95, 84, 90), nrow = 2, ncol = 3, byrow = TRUE)
+
+rownames(scores) <- c("Quiz1", "Quiz2")
+colnames(scores) <- c("Ana", "Ben", "Cid")
+
+scores
+```
+
+## Question #1
+
+```{r}
+m1
+m2
+
+# The difference between m1 and m2 is how R fills the matrix. By default, R fills the matrix column by column. When byrow = TRUE is added, R fills the matrix row by row instead. This changes the arrangement of the numbers even though both matrices contain the same values.
+```
+
+## Question #2
+
+```{r, warning=TRUE}
+matrix(1:8, nrow = 3, ncol = 3)
+
+# R gives a warning because there are only 8 numbers for the 9 available positions. It repeats the values to fill the remaining position. The number 1 is repeated at the end to complete the matrix.
+```
+
+---
+
+## Part B — Subsetting Matrices
+
+### A.
+```{r}
+scores[1, 2]
+
+scores[1, ]
+
+scores[, "Ben"]
+```
+
+### B.
+```{r}
+scores[scores >= 90]
+
+# This returns only the values that are greater than or equal to 90. The result becomes a vector instead of a matrix because the original row and column structure is not retained.
+```
+
+## Question #3
+
+```{r}
+class(scores[1, ])
+
+class(scores[, "Ben"])
+
+# Both results are converted into numeric vectors. R automatically removes the matrix structure when only one row or column is selected. This makes it easier to work with the selected values without keeping the original matrix structure.
+```
+
+## Question #4
+
+```{r}
+scores[scores >= 90]
+
+# Logical subsetting returns only the values that satisfy the condition. Unlike selecting a specific row or column, it does not preserve the original two-dimensional arrangement. This is why the row names and column names are no longer displayed in the result.
+```
+
+---
+
+## Part C — Matrix Properties and Operations
+
+### A.
+```{r}
+dim(scores)
+
+nrow(scores)
+
+ncol(scores)
+```
+
+### B.
+```{r}
+scores_t <- t(scores)
+
+scores_t
+
+dim(scores)
+
+dim(scores_t)
+```
+
+### C.
+```{r}
+a <- matrix(1:4, nrow = 2)
+
+b <- matrix(5:8, nrow = 2)
+
+a + b
+
+a * b
+```
+
+### D.
+```{r}
+a %*% b
+```
+
+## Question #5
+
+```{r}
+a * b
+
+a %*% b
+
+# The a * b operation multiplies each element by the corresponding element in the other matrix. On the other hand, a %*% b performs actual matrix multiplication, where rows from the first matrix are multiplied with columns from the second matrix and their products are added together. This is why they produce different results.
+```
+
+## Question #6
+
+```{r}
+dim(scores)
+
+dim(scores_t)
+
+scores_t
+
+# The row and column names also switch positions because the rows become columns and the columns become rows. This keeps the names correctly connected to their corresponding values after transposing the matrix.
+```
+
+---
+
+## Part D — cbind() and rbind()
+
+### A.
+```{r}
+scores_v2 <- cbind(scores, Dex = c(85, 91))
+
+scores_v2
+```
+
+### B.
+```{r}
+scores_v3 <- rbind(scores, Quiz3 = c(80, 88, 93))
+
+scores_v3
+```
+
+## Question #7
+
+```{r, warning=TRUE, error=TRUE}
+cbind(scores, c(85, 91, 100))
+
+# R gives a warning because the matrix has only 2 rows, while the additional vector contains 3 values. The values do not match the existing number of rows, so R recycles the values. The warning indicates that the number of rows is not a multiple of the vector length. cbind() and rbind() require matching dimensions to combine data correctly.
+```
+
+## Question #8
+
+```{r}
+# I would use rbind() when adding new records to a dataset over time. For example, if I am recording daily sales, I would use rbind() to add each new day's sales as another row. This is because each row represents a different day, while the columns contain the sales information. It allows me to keep the previous records while adding new ones.
+```
+
+---
+
+## Part E — Arrays: Creating and Subsetting
+
+### A.
+```{r}
+arr <- array(1:12, dim = c(2, 3, 2))
+
+arr
+```
+
+### B.
+```{r}
+arr[1, 2, 2]
+
+arr[, , 1]
+```
+
+### C.
+```{r}
+dim(arr)
+```
+
+## Question #9
+
+```{r}
+dim(arr)
+
+# The first number represents the number of rows, which is 2. The second number represents the number of columns, which is 3. The third number represents the number of layers, which is 2. Together, these describe the three dimensions of the array.
+```
+
+## Question #10
+
+```{r}
+# A real-world example of a 3D array is a student's examination scores across different subjects and semesters. The rows could represent students, the columns could represent subjects, and the layers could represent different semesters. A single matrix would not be enough because it can only represent two dimensions, while the array can organize the scores across multiple semesters.
+```
+
+---
+
+## Part F — Critical Thinking Challenge
+
+### A.
+```{r}
+class_a <- matrix(c(85, 90, 78, 92), nrow = 2, byrow = TRUE,
+                 dimnames = list(c("S1", "S2"), c("Midterm", "Final")))
+
+class_b <- matrix(c(88, 84, 95, 91), nrow = 2, byrow = TRUE,
+                  dimnames = list(c("S3", "S4"), c("Midterm", "Final")))
+
+all_students <- rbind(class_a, class_b)
+
+all_students
+```
+
+### B.
+```{r}
+rowMeans(all_students)
+```
+
+## Question #11
+
+```{r}
+# I chose rbind() because class_a and class_b contain different students but have the same columns. The shared column names, Midterm and Final, indicate that their rows should be combined rather than their columns. This keeps all the students in one matrix while maintaining the correct score columns.
+```
+
+## Question #12
+
+```{r}
+# If I had five classes, I would use rbind() to combine all five matrices because they contain different students but share the same columns, Midterm and Final. I would add each class below the previous one until all students are included. After combining them, I would use dim() to check the final number of rows and columns and confirm that all students and their two scores were included.
+```
+
+---
+
+## Conclusion
+
+```{r}
+# A matrix is a two-dimensional data structure that contains rows and columns, while an array can have three or more dimensions. Both structures store elements of the same data type, but arrays can organize more complex data using additional dimensions. The cbind() and rbind() functions are useful when combining related data by adding columns or rows. For example, I can use rbind() to add new students and their examination scores to an existing dataset.
+```
+
+---
