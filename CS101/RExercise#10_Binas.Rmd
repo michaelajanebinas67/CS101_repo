@@ -1,0 +1,218 @@
+---
+title: "RExercise#10_Binas"
+author: "Michaela Jane Binas"
+date: "2026-11-27"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Part A - Predict the Output
+
+## Question #1
+
+```{r}
+m <- matrix(1:6, nrow = 2)
+m
+```
+
+The matrix is filled column by column by default, so it will look like this:
+
+```{r}
+apply(m, 1, sum)
+```
+
+# The first `apply()` uses `MARGIN = 1`, which means it works across the rows. It adds the values in each row, so the result is 9 and 12.
+
+```{r}
+apply(m, 2, sum)
+```
+
+# The second `apply()` uses `MARGIN = 2`, which means it works down the columns. It adds the values in each column, resulting in 3, 7, and 11.
+
+```{r}
+class(lapply(1:3, function(i) i^2))
+```
+
+# This returns `"list"` because `lapply()` always produces a list, even if the results are just individual numbers.
+
+```{r}
+sapply(1:3, function(i) i^2)
+```
+
+# This returns 1, 4, and 9 because `sapply()` applies the function to each number and simplifies the results into a numeric vector.
+
+```{r}
+sapply(c('a', 'bb', 'ccc'), nchar)
+```
+
+# This produces a named integer vector containing 1, 2, and 3. The `nchar()` function counts the number of characters in each string, while `sapply()` uses the strings as names for the results.
+
+```{r}
+mapply(function(x, y) x * y, 1:3, 4:6)
+```
+
+# This returns 4, 10, and 18 because `mapply()` multiplies the corresponding elements of the two vectors. It calculates 1 times 4, 2 times 5, and 3 times 6.
+
+```{r}
+tapply(c(10, 20, 30, 40), c('u', 'v', 'u', 'v'), sum)
+```
+
+# This groups the values based on their labels and calculates the sum for each group. Group `u` adds 10 and 30 to get 40, while group `v` adds 20 and 40 to get 60.
+
+---
+
+## Question #2
+
+### Data
+
+```{r}
+scores <- matrix(c(70, 85, 90,
+                  60, 75, 80,
+                  88, 92, 79),
+                nrow = 3, byrow = TRUE,
+                dimnames = list(c('Ana', 'Ben', 'Cara'),
+                               c('Math', 'Sci', 'Eng')))
+
+temps <- list(Mon = c(30, 32, 31),
+              Tue = c(29, 33),
+              Wed = c(31, 34, 35, 30))
+```
+
+### B.1
+
+```{r}
+apply(scores, 1, mean)
+```
+
+```{r}
+apply(scores, 2, max)
+```
+
+```{r}
+apply(scores, 1, function(r) names(r)[which.max(r)])
+```
+
+### B.2
+
+```{r}
+lapply(temps, mean)
+```
+
+```{r}
+sapply(temps, length)
+```
+
+```{r}
+vapply(temps, range, numeric(2))
+```
+
+# The `range()` function returns two values for each day, which are the minimum and maximum temperatures. Since `vapply()` expects two numeric values for every list element through `numeric(2)`, it organizes the results into a matrix with two rows and one column for each day. When a function returns only one value per element, the result can be a vector, but when it returns multiple values of equal length, it can form a matrix.
+
+---
+
+## Question #3
+
+```{r}
+p <- c(1000, 2000)
+r <- c(0.05, 0.04)
+n <- c(2, 3)
+
+mapply(function(p, r, n) p * (1 + r)^n, p, r, n)
+```
+
+```{r}
+mapply(function(p, n, r) p * (1 + r)^n,
+       p = c(1000, 2000), n = c(2, 3),
+       MoreArgs = list(r = 0.045))
+```
+
+---
+
+## Question #4
+
+### (a) Mean Sepal.Length per species
+
+```{r}
+tapply(iris$Sepal.Length, iris$Species, mean)
+```
+
+### (b) Number of cars per cyl and am combination
+
+```{r}
+table(mtcars$cyl, mtcars$am)
+```
+
+### (c) Mean mpg per cyl, ignoring NAs
+
+```{r}
+tapply(mtcars$mpg, mtcars$cyl, mean, na.rm = TRUE)
+```
+
+---
+
+### Part A - Debugging
+
+# Question #5
+
+# (a)
+
+### (a)
+
+```{r, eval=FALSE}
+sapply(list(a = 1:3, b = 4:6), mean())
+```
+
+The mistake is that `mean()` is being called without any values to calculate. Instead of calling the function immediately, we should pass `mean` itself so that `sapply()` can apply it to each list element.
+
+```{r}
+sapply(list(a = 1:3, b = 4:6), mean)
+```
+
+
+### (b)
+
+```{r}
+apply(matrix(1:6, nrow = 3), 1, mean)
+```
+
+# The original code uses `MARGIN = 1`, which calculates the mean of each row and returns three values. Since the goal is to get the mean of each column, the margin should be changed to 2.
+
+```{r}
+apply(matrix(1:6, nrow = 3), 2, mean)
+```
+
+### (c)
+
+```{r}
+df <- data.frame(n = c(1, 2), s = c('a', 'b'))
+apply(df, 2, class)
+```
+
+# The problem is that `apply()` converts the data frame into a matrix first, which may cause the original column types to be lost. Using `sapply()` is more appropriate because it treats the columns separately.
+
+```{r}
+sapply(df, class)
+```
+
+---
+
+# Question #6
+
+# (a)
+
+# `lapply()` applies a function to every element of a list and always returns the results as a list. On the other hand, `sapply()` tries to simplify those results into a vector or matrix if possible, which makes it more convenient but can also cause the output type to vary. I would use `vapply()` when I need a more predictable result because I can specify the expected output type, and it will report an error if the result does not match.
+
+# (b)
+
+### (b)
+
+```{r, eval=FALSE}
+tapply(x, g, mean)
+```
+
+`tapply()` performs the grouping and calculation in one step. It returns the mean for each group as a named result, rather than having to manually split the data first and then apply `mean()` to each part.
